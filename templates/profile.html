@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Profile Settings</h2>
+
+<h3>Change Username</h3>
+<form method="post">
+    <input type="hidden" name="action" value="change_username">
+    <label>New Username</label>
+    <input type="text" name="new_username" required>
+    <button type="submit">Update Username</button>
+</form>
+
+<hr>
+
+<h3>Change Password</h3>
+<form method="post">
+    <input type="hidden" name="action" value="change_password">
+    <label>Old Password</label>
+    <input type="password" name="old_password" required>
+
+    <label>New Password</label>
+    <input type="password" name="new_password" required>
+
+    <button type="submit">Update Password</button>
+</form>
+
+<hr>
+
+<h3 style="color:red;">Delete Account</h3>
+
+<form method="post" action="{{ url_for('delete_account') }}">
+    <label>Enter Password to Confirm</label>
+    <input type="password" name="password" required>
+
+    <button type="submit" style="background-color:red; color:white;">
+        Delete My Account
+    </button>
+</form>
+
+
+{% for cat, msgs in get_flashed_messages(with_categories=True) %}
+  <p class="{{ cat }}">{{ msgs }}</p>
+{% endfor %}
+
+{% endblock %}

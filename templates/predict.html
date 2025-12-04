@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Expense Prediction</h2>
+{% if error %}
+  <p class="error">{{ error }}</p>
+{% else %}
+  <p>Predicted expense for next month: <strong>₹ {{ "%.2f"|format(prediction) }}</strong></p>
+  <h4>Historical monthly totals</h4>
+  <table class="table">
+    <thead><tr><th>Month</th><th>Total (₹)</th></tr></thead>
+    <tbody>
+      {% for row in history %}
+      <tr>
+        <td>{{ row.year_month }}</td>
+        <td>₹ {{ "{:,.2f}".format(row.total_amount) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+{% endblock %}

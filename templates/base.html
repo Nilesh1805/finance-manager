@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Finance Manager - Nilesh</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Finance Manager – Nilesh</h1>
+      <nav>
+  {% if current_user.is_authenticated %}
+    <span style="color:#fff; margin-right:12px;">Hello, {{ current_user.username }}</span>
+    <a href="{{ url_for('index') }}">Dashboard</a>
+    <a href="{{ url_for('add_expense') }}">Add Expense</a>
+    <a href="{{ url_for('predict') }}">Predict</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  {% else %}
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('register') }}">Register</a>
+  {% endif %}
+</nav>
+
+    </header>
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="footer">Made by Nilesh - Mini Project</footer>
+  </body>
+</html>

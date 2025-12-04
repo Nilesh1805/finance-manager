@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard</h2>
+<div class="cards">
+  <div class="card">
+    <h3>This Month Spent</h3>
+    <p>₹ {{ "{:,.2f}".format(summary.month_total) }}</p>
+  </div>
+  <div class="card">
+    <h3>Total Spent (All time)</h3>
+    <p>₹ {{ "{:,.2f}".format(summary.total_all) }}</p>
+  </div>
+  <div class="card">
+    <h3>Top Categories</h3>
+    <ul>
+      {% for k,v in summary.category_data.items() %}
+        <li>{{ k }} : ₹ {{ "{:,.2f}".format(v) }}</li>
+      {% else %}
+        <li>No data</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<section class="charts">
+  <div class="chart-card">
+    <h4>Category-wise Spending</h4>
+    <canvas id="catChart"></canvas>
+  </div>
+  <div class="chart-card">
+    <h4>Monthly Spending</h4>
+    <canvas id="monthChart"></canvas>
+  </div>
+</section>
+
+<section>
+  <h3>Recent Expenses</h3>
+  <table class="table">
+    <table class="table">
+<thead>
+<tr>
+    <th>Date</th>
+    <th>Category</th>
+    <th>Amount</th>
+    <th>Description</th>
+    <th>Action</th>
+</tr>
+</thead>
+
+    <tbody>
+      {% for r in recent %}
+      <tr>
+        <td>{{ r.date }}</td>
+        <td>{{ r.category }}</td>
+        <td>₹ {{ "{:,.2f}".format(r.amount) }}</td>
+        <td>{{ r.description }}</td>
+        <td><a href="#" onclick="confirmDelete({{ r.id }})" class="delete-btn">Delete</a></td>
+
+      </tr>
+      {% else %}
+      <tr><td colspan="4">No expenses yet</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<script>
+const catLabels = {{ categories|tojson }};
+const catValues = {{ cat_values|tojson }};
+const months = {{ months|tojson }};
+const totals = {{ totals|tojson }};
+
+const ctx1 = document.getElementById('catChart').getContext('2d');
+new Chart(ctx1, {
+    type: 'pie',
+    data: {
+        labels: catLabels,
+        datasets: [{ data: catValues }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+    }
+});
+
+
+const ctx2 = document.getElementById('monthChart').getContext('2d');
+new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: months,
+        datasets: [{ label: 'Monthly Spend (₹)', data: totals }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+    }
+});
+</script>
+
+<script>
+function confirmDelete(id) {
+    Swal.fire({
+        title: "Delete this expense?",
+        text: "This action cannot be undone.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ff4d4d",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, Delete",
+        background: "rgba(0, 0, 0, 0.7)",
+        color: "#fff"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/delete/" + id;
+        }
+    });
+}
+
+
+</script>
+{% endblock %}

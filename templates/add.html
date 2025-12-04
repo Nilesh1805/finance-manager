@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Add Expense</h2>
+<form method="post" class="form">
+  <label>Amount (₹)</label>
+  <input name="amount" type="number" step="0.01" required>
+
+  <label>Category</label>
+  <input name="category" type="text" placeholder="Food, Travel, Bills..." required>
+
+  <label>Date</label>
+  <input name="date" type="date" value="{{ default_date }}">
+
+  <label>Description</label>
+  <input name="description" type="text">
+
+  <button type="submit">Add Expense</button>
+</form>
+{% endblock %}
