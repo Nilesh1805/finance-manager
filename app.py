@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-# import pandas as pd
+import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 import os
